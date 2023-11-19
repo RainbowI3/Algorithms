@@ -1,40 +1,29 @@
 #include <iostream>
 #include <vector>
-#include<math.h>
-#include<iomanip>
-#include <algorithm>
-#include <string>
-#include<unordered_map>
-#include <fstream>
 using namespace std;
-int get_max_value(vector<int>& a) {
-    int n = a.size();
-    vector<vector<int>>d(n, vector<int>(n, 0));
-    for (int i = 0; i < n; ++i) {
-        d[i][i] = a[i];
-    }
-    for (int i = n - 2; i >= 0; --i) {
-        for (int j = i + 1; j < n; ++j){
-            for(int k = i;k < j; ++k){
-                d[i][j] = max({
-                       d[i][j],
-                       d[i][k] + d[k + 1][j],
-                       d[i][k] * d[k + 1][j]
-                    });
+vector<int> prices = { 1, 5, 8, 9, 10, 17, 17, 20, 24, 30 };
+vector<int> results(11, -1);
+class Solution {
+public:
+    int cut(int n) {
+        results[0] = 0;
+        
+        for (int j = 1; j <= n; j++) {
+            int res = 0;
+            for(int i = 1; i <= j; i++){
+                res = max(res, prices[i - 1] + results[j - i]);
             }
-        }     
-    }
-    cout << "Matrix:" << endl;
-    for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < n; ++j) {
-            cout <<setw(3) << d[i][j] << " ";
+            results[j] = res;
         }
-        cout << endl;
+        return results[n];
     }
-    return d[0][n - 1];
-}
+};
+
 int main() {
-    vector<int>input { 1,2,3,4,5 };
-    cout << get_max_value(input) ;
+    Solution solution;
+    int n = 5;
+    int result = solution.cut(n);
+    cout << "result = "<< result << endl;
+
     return 0;
 }
