@@ -1,0 +1,64 @@
+#include<iostream>
+#include<vector>
+#include<math.h>
+#include<iomanip>
+#include<algorithm>
+#include<string>
+#include<unordered_map>
+#include<fstream>
+#include<immintrin.h>
+#include<chrono>
+#include<time.h>
+#include<cctype>
+#include <utility> 
+#include <limits>
+using namespace std;
+ 
+const int MAX_N = 10000;
+vector<int> graph[MAX_N];
+vector<bool> visited(MAX_N, false);
+vector<int> ts; 
+ 
+void dfs(int v) {
+    visited[v] = true;
+    for (int u : graph[v]) {
+        if (!visited[u]) {
+            dfs(u);
+        }
+    }
+    ts.push_back(v);
+}
+ 
+int longestPath(int n) {
+    for (int v = 0; v < n; ++v) {
+        if (!visited[v]) {
+            dfs(v);
+        }
+    }
+    reverse(ts.begin(), ts.end());
+ 
+    vector<int> longest(n, 0);
+    for (int v : ts) {
+        for (int u : graph[v]) {
+            longest[u] = std::max(longest[u], longest[v] + 1);
+        }
+    }
+ 
+    
+    return *max_element(longest.begin(), longest.end());
+}
+ 
+int main() {
+    int n, m;
+   cin >> n >> m;
+ 
+    for (int i = 0; i < m; ++i) {
+        int b, e;
+       cin >> b >> e;
+        graph[b - 1].push_back(e - 1); 
+    }
+ 
+   cout << longestPath(n) << endl;
+ 
+    return 0;
+}
