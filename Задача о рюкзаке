@@ -1,0 +1,45 @@
+#include<iostream>
+#include<vector>
+#include<math.h>
+#include<iomanip>
+#include<algorithm>
+#include<string>
+#include<unordered_map>
+#include<fstream>
+#include<immintrin.h>
+#include<chrono>
+#include<time.h>
+#include<cctype>
+#include <utility> 
+#include <limits>
+#define ll long long
+ 
+using namespace std;
+ 
+int main() {
+    int n;
+    cin >> n;
+   vector<ll> weights(n);
+    for (int i = 0; i < n; ++i) {
+        cin >> weights[i];
+    }
+ 
+    ll C;
+    cin >> C;
+ 
+    ll ways = 0;
+    for (ll mask = 0; mask < (1LL << n); ++mask) {
+       ll totalWeight = 0;
+        for (int i = 0; i < n; ++i) {
+            if (mask & (1LL << i)) {
+                totalWeight += weights[i];
+            }
+        }
+        if (totalWeight <= C) {
+            ways++;
+        }
+    }
+ 
+    cout << ways << endl;
+    return 0;
+}
